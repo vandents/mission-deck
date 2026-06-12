@@ -24,6 +24,13 @@ docker compose exec web composer install
 docker compose exec web php yii migrate
 ```
 
+There is no public signup — create users from the console:
+
+```sh
+docker compose exec web php yii user/create <username> <email> <password>
+docker compose exec web php yii user/set-password <username> <newpassword>
+```
+
 ## Project layout
 
 ```
@@ -37,7 +44,8 @@ Database credentials are read from environment variables (`DB_HOST`, `DB_NAME`, 
 ## Roadmap
 
 - [x] Phase 1a: Dockerized LAMP dev environment + Yii2 scaffold
-- [ ] Phase 1b: Auth + fleet/asset CRUD, EC2 deployment
+- [x] Phase 1b: DB-backed auth + drone fleet / asset CRUD + dashboard
+- [ ] Phase 1c: EC2 deployment (Apache vhost, TLS, MySQL hardening)
 - [ ] Phase 2: Waypoint mission planner (Leaflet map) + MySQL schema
 - [ ] Phase 3: Telemetry REST API + flight simulator + live dashboard
 - [ ] Phase 4: QGroundControl `.plan` import/export, flight replay
