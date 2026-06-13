@@ -45,7 +45,7 @@ Database credentials are read from environment variables (`DB_HOST`, `DB_NAME`, 
 
 - [x] Phase 1a: Dockerized LAMP dev environment + Yii2 scaffold
 - [x] Phase 1b: DB-backed auth + drone fleet / asset CRUD + dashboard
-- [ ] Phase 1c: EC2 deployment (Apache vhost, TLS, MySQL hardening) — see [DEPLOY.md](DEPLOY.md)
+- [x] Phase 1c: EC2 deployment — live at https://mission-deck.app — see [DEPLOY.md](DEPLOY.md)
 - [ ] Phase 2: Waypoint mission planner (Leaflet map) + MySQL schema
 - [ ] Phase 3: Telemetry REST API + flight simulator + live dashboard
 - [ ] Phase 4: QGroundControl `.plan` import/export, flight replay
