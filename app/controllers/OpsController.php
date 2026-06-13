@@ -42,16 +42,18 @@ class OpsController extends Controller
     {
         $since = time() - self::FRESH_SECONDS;
 
-        // Greatest-n-per-group: join each drone's max recorded_at back to its row.
+        // Latest ping per drone. Keyed off the auto-increment id (strictly
+        // monotonic) rather than recorded_at, which is second-granularity and
+        // would tie when several pings land in the same second.
         $rows = Yii::$app->db->createCommand('
             SELECT d.name AS drone, t.drone_id, t.mission_id, t.latitude, t.longitude,
                    t.altitude, t.heading, t.battery_pct, t.status, t.recorded_at
             FROM telemetry t
             JOIN (
-                SELECT drone_id, MAX(recorded_at) AS mx
+                SELECT drone_id, MAX(id) AS mx
                 FROM telemetry
                 GROUP BY drone_id
-            ) latest ON latest.drone_id = t.drone_id AND latest.mx = t.recorded_at
+            ) latest ON latest.mx = t.id
             JOIN drone d ON d.id = t.drone_id
             WHERE t.recorded_at >= :since
             ORDER BY d.name
