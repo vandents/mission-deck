@@ -26,14 +26,11 @@ sudo apt-get install -y \
   git unzip ufw fail2ban unattended-upgrades \
   certbot python3-certbot-apache
 
-echo "==> [2/7] Composer (verified installer)"
+echo "==> [2/7] Composer"
 if ! command -v composer >/dev/null 2>&1; then
-  expected="$(curl -sS https://composer.github.io/installer.sig)"
-  curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
-  actual="$(php -r "echo hash_file('sha384', '/tmp/composer-setup.php');")"
-  [ "$expected" = "$actual" ] || { echo "Composer installer checksum mismatch"; exit 1; }
-  sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
-  rm -f /tmp/composer-setup.php
+  curl -sS -L https://getcomposer.org/download/latest-stable/composer.phar -o /tmp/composer.phar
+  sudo install -m 0755 /tmp/composer.phar /usr/local/bin/composer
+  rm -f /tmp/composer.phar
 fi
 
 echo "==> [3/7] Firewall: allow only SSH + HTTP/HTTPS"
