@@ -10,8 +10,8 @@ use yii\bootstrap5\Html;
 
 $this->title = 'Login to your account';
 $this->params['breadcrumbs'][] = $this->title;
-$this->params['meta_description'] = 'Log in to access your Yii2 application account.';
-$this->params['meta_keywords'] = 'yii, yii2, login, sign in, authentication';
+$this->params['meta_description'] = 'Log in to Mission Deck, the UAS fleet mission control platform.';
+$this->params['meta_keywords'] = 'mission deck, drone, uas, login, mission control';
 $htmlIcon = <<<HTML
 {label}<div class="input-group"><span class="input-group-text" aria-hidden="true">%s</span>{input}</div>{error}{hint}
 HTML;
@@ -24,22 +24,19 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
             <!-- Brand panel -->
             <div class="col-md-5 d-none d-md-flex login-brand-panel text-white">
                 <div class="d-flex flex-column justify-content-between p-4 p-lg-5 w-100">
-                    <div>
+                    <div class="d-flex align-items-center mb-4">
                         <?= Html::img(
-                            Yii::getAlias('@web/images/yii3_full_white_for_dark.svg'),
-                            [
-                                'alt' => 'Yii Framework',
-                                'class' => 'mb-4',
-                                'height' => 40,
-                            ],
+                            Yii::getAlias('@web/images/mission-deck-logo.svg'),
+                            ['alt' => 'Mission Deck', 'height' => 44, 'class' => 'me-2'],
                         ) ?>
+                        <span class="h4 fw-bold mb-0">Mission Deck</span>
                     </div>
                     <div>
                         <h2 class="fw-bold mb-3 login-brand-title">
                             Welcome<br>Back
                         </h2>
                         <p class="opacity-75 mb-0 login-brand-text">
-                            Log in to access your Yii2 application and manage your account.
+                            Plan missions, monitor your fleet, and track live drone telemetry.
                         </p>
                     </div>
                 </div>
@@ -52,13 +49,10 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
                         <!-- Mobile-only logo -->
                         <div class="d-md-none mb-3">
                             <?= Html::img(
-                                Yii::getAlias('@web/images/yii3_full_black_for_light.svg'),
-                                [
-                                    'alt' => 'Yii Framework',
-                                    'class' => 'login-mobile-logo',
-                                    'height' => 36,
-                                ],
+                                Yii::getAlias('@web/images/mission-deck-logo.svg'),
+                                ['alt' => 'Mission Deck', 'class' => 'login-mobile-logo', 'height' => 52],
                             ) ?>
+                            <div class="h5 fw-bold mt-2 mb-0">Mission Deck</div>
                         </div>
                         <h1 class="h3 fw-bold mb-1"><?= Html::encode($this->title) ?></h1>
                         <p class="text-body-secondary small">Enter your credentials to continue</p>
