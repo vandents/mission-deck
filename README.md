@@ -56,8 +56,13 @@ Database credentials are read from environment variables (`DB_HOST`, `DB_NAME`, 
 so it animates on the **Live Ops** page (standard library only):
 
 ```sh
+# Fly one mission's planned route:
 python3 tools/simulate_flight.py --base-url http://localhost:8080 \
     --token local-dev-token --mission 1 --drone 1
+
+# Or fly the whole fleet around at once (random walk):
+python3 tools/simulate_fleet.py --base-url http://localhost:8080 \
+    --token local-dev-token --duration 60
 ```
 
 The token is `API_TOKEN` (set in docker-compose locally, `/etc/mission-deck.env` on the server).

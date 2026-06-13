@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\models\Drone;
 use app\models\Mission;
 use app\models\Telemetry;
 use app\models\Waypoint;
@@ -30,6 +31,7 @@ class ApiController extends Controller
                 'actions' => [
                     'telemetry' => ['post'],
                     'mission' => ['get'],
+                    'drones' => ['get'],
                 ],
             ],
         ];
@@ -78,6 +80,18 @@ class ApiController extends Controller
                 'speed' => $w->speed === null ? null : (float) $w->speed,
             ], $mission->waypoints),
         ]);
+    }
+
+    /**
+     * Lists drones for the fleet simulator: GET /api/drones
+     */
+    public function actionDrones(): Response
+    {
+        $this->authenticate();
+
+        return $this->asJson(
+            Drone::find()->select(['id', 'name', 'status'])->orderBy('name')->asArray()->all()
+        );
     }
 
     private function authenticate(): void
