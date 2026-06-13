@@ -25,6 +25,11 @@ $items = [
         'visible' => !Yii::$app->user->isGuest,
     ],
     [
+        'label' => 'Live Ops',
+        'url' => ['/ops/index'],
+        'visible' => !Yii::$app->user->isGuest,
+    ],
+    [
         'label' => 'Assets',
         'url' => ['/asset/index'],
         'visible' => !Yii::$app->user->isGuest,

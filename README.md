@@ -47,5 +47,17 @@ Database credentials are read from environment variables (`DB_HOST`, `DB_NAME`, 
 - [x] Phase 1b: DB-backed auth + drone fleet / asset CRUD + dashboard
 - [x] Phase 1c: EC2 deployment — live at https://mission-deck.app — see [DEPLOY.md](DEPLOY.md)
 - [ ] Phase 2: Waypoint mission planner (Leaflet map) + MySQL schema
-- [ ] Phase 3: Telemetry REST API + flight simulator + live dashboard
+- [x] Phase 3: Telemetry REST API + flight simulator + live dashboard
 - [ ] Phase 4: QGroundControl `.plan` import/export, flight replay
+
+## Flight simulator
+
+`tools/simulate_flight.py` flies a planned mission, streaming telemetry to the API
+so it animates on the **Live Ops** page (standard library only):
+
+```sh
+python3 tools/simulate_flight.py --base-url http://localhost:8080 \
+    --token local-dev-token --mission 1 --drone 1
+```
+
+The token is `API_TOKEN` (set in docker-compose locally, `/etc/mission-deck.env` on the server).

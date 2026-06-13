@@ -14,7 +14,7 @@ by one script so the setup is reproducible and reviewable.
 | App path | `/var/www/mission-deck` (repo); Yii app in `app/` |
 | Web server | Apache 2.4 + mod_php 8.4, DocumentRoot `app/web/` |
 | Database | MySQL 8 on localhost, database `missiondeck` |
-| Secrets | `/etc/mission-deck.env` (root:www-data, 640) — DB password + `YII_ENV` |
+| Secrets | `/etc/mission-deck.env` (root:www-data, 640) — DB password, `API_TOKEN`, `YII_ENV`; exposed to Apache via `conf-enabled/mission-deck-env.conf` |
 | SSH | `ssh -i ~/.ssh/mission-deck.pem ubuntu@44.209.186.140` |
 
 ## First-time provisioning

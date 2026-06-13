@@ -10,6 +10,8 @@ services:
       DB_NAME: missiondeck
       DB_USER: missiondeck
       DB_PASSWORD: secret
+      # Token the flight simulator uses to authenticate to the JSON API.
+      API_TOKEN: local-dev-token
       # Local dev runs with the debug toolbar and Gii; the server defaults to prod.
       YII_ENV: dev
       YII_DEBUG: "1"
