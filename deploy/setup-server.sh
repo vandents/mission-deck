@@ -10,7 +10,8 @@
 set -euo pipefail
 
 DOMAIN="mission-deck.app"
-APP_DIR="/var/www/mission-deck"
+APP_DIR="/var/www/mission-deck"   # git repo
+APP_ROOT="$APP_DIR/app"           # Yii2 application lives in app/
 REPO="https://github.com/vandents/mission-deck.git"
 ENV_FILE="/etc/mission-deck.env"
 
@@ -81,9 +82,9 @@ sudo tee /etc/apache2/sites-available/mission-deck.conf >/dev/null <<CONF
 <VirtualHost *:80>
     ServerName ${DOMAIN}
     ServerAlias www.${DOMAIN}
-    DocumentRoot ${APP_DIR}/web
+    DocumentRoot ${APP_ROOT}/web
 
-    <Directory ${APP_DIR}/web>
+    <Directory ${APP_ROOT}/web>
         AllowOverride All
         Require all granted
     </Directory>
@@ -112,7 +113,7 @@ Provisioning complete. The site is live over HTTP at this server's IP.
 
 Next:
   1. Create your login user (no public signup):
-       cd $APP_DIR
+       cd $APP_ROOT
        sudo -u www-data --preserve-env=DB_HOST,DB_NAME,DB_USER,DB_PASSWORD,YII_ENV \\
          php yii user/create <username> <email> <password>
 

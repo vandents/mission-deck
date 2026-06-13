@@ -11,8 +11,8 @@ by one script so the setup is reproducible and reviewable.
 |---|---|
 | Host | EC2 t3.micro, Ubuntu 24.04, Elastic IP `44.209.186.140` |
 | Domain | `mission-deck.app` (HTTPS only — `.app` is HSTS-preloaded) |
-| App path | `/var/www/mission-deck` |
-| Web server | Apache 2.4 + mod_php 8.4, DocumentRoot `web/` |
+| App path | `/var/www/mission-deck` (repo); Yii app in `app/` |
+| Web server | Apache 2.4 + mod_php 8.4, DocumentRoot `app/web/` |
 | Database | MySQL 8 on localhost, database `missiondeck` |
 | Secrets | `/etc/mission-deck.env` (root:www-data, 640) — DB password + `YII_ENV` |
 | SSH | `ssh -i ~/.ssh/mission-deck.pem ubuntu@44.209.186.140` |
@@ -40,7 +40,7 @@ git clone https://github.com/vandents/mission-deck.git /tmp/md && \
 There is no public signup. After provisioning:
 
 ```sh
-cd /var/www/mission-deck
+cd /var/www/mission-deck/app
 sudo -u www-data --preserve-env=DB_HOST,DB_NAME,DB_USER,DB_PASSWORD,YII_ENV \
   php yii user/create <username> <email> <password>
 ```
