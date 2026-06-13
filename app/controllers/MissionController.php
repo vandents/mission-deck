@@ -64,42 +64,21 @@ class MissionController extends Controller
     }
 
     /**
-     * Replaces a mission's waypoints from a JSON body. Full-replace semantics:
-     * the posted list becomes the mission's complete, re-sequenced flight path.
+     * Replaces a mission's waypoints from a JSON body (the map planner).
      */
     public function actionSaveWaypoints(int $id): Response
     {
         $mission = $this->findModel($id);
-        $payload = json_decode($this->request->getRawBody(), true);
-        $rows = $payload['waypoints'] ?? [];
+        $payload = (array) json_decode($this->request->getRawBody(), true);
 
-        $db = Yii::$app->db;
-        $transaction = $db->beginTransaction();
         try {
-            Waypoint::deleteAll(['mission_id' => $mission->id]);
-
-            foreach (array_values($rows) as $i => $row) {
-                $waypoint = new Waypoint([
-                    'mission_id' => $mission->id,
-                    'seq' => $i + 1,
-                    'latitude' => $row['latitude'] ?? null,
-                    'longitude' => $row['longitude'] ?? null,
-                    'altitude' => $row['altitude'] ?? 50,
-                    'speed' => ($row['speed'] ?? '') === '' ? null : $row['speed'],
-                ]);
-                if (!$waypoint->save()) {
-                    throw new \RuntimeException('Invalid waypoint at position ' . ($i + 1));
-                }
-            }
-
-            $transaction->commit();
+            $count = $this->replaceWaypoints($mission, $payload['waypoints'] ?? []);
         } catch (\Throwable $e) {
-            $transaction->rollBack();
             Yii::$app->response->statusCode = 422;
             return $this->asJson(['success' => false, 'error' => $e->getMessage()]);
         }
 
-        return $this->asJson(['success' => true, 'count' => count($rows)]);
+        return $this->asJson(['success' => true, 'count' => $count]);
     }
 
     public function actionCreate(): Response|string
@@ -158,24 +137,14 @@ class MissionController extends Controller
             return $this->redirect(['view', 'id' => $id]);
         }
 
-        $rows = QgcPlan::parse($plan);
-        $transaction = Yii::$app->db->beginTransaction();
         try {
-            Waypoint::deleteAll(['mission_id' => $mission->id]);
-            foreach ($rows as $i => $row) {
-                $waypoint = new Waypoint(array_merge($row, ['mission_id' => $mission->id, 'seq' => $i + 1]));
-                if (!$waypoint->save()) {
-                    throw new \RuntimeException('Invalid waypoint at position ' . ($i + 1));
-                }
-            }
-            $transaction->commit();
+            $count = $this->replaceWaypoints($mission, QgcPlan::parse($plan));
         } catch (\Throwable $e) {
-            $transaction->rollBack();
             Yii::$app->session->setFlash('error', 'Import failed: ' . $e->getMessage());
             return $this->redirect(['view', 'id' => $id]);
         }
 
-        Yii::$app->session->setFlash('success', 'Imported ' . count($rows) . ' waypoint(s) from the .plan file.');
+        Yii::$app->session->setFlash('success', "Imported {$count} waypoint(s) from the .plan file.");
         return $this->redirect(['view', 'id' => $id]);
     }
 
@@ -191,6 +160,34 @@ class MissionController extends Controller
             ->all();
 
         return $this->render('replay', ['model' => $mission, 'track' => $track]);
+    }
+
+    /**
+     * Replaces all of a mission's waypoints with the given rows, re-sequenced
+     * from 1. Runs in a transaction; throws (and rolls back) on invalid data.
+     *
+     * @param array<int, array> $rows each with latitude/longitude/altitude/speed
+     */
+    private function replaceWaypoints(Mission $mission, array $rows): int
+    {
+        Yii::$app->db->transaction(function () use ($mission, $rows) {
+            Waypoint::deleteAll(['mission_id' => $mission->id]);
+            foreach (array_values($rows) as $i => $row) {
+                $waypoint = new Waypoint([
+                    'mission_id' => $mission->id,
+                    'seq' => $i + 1,
+                    'latitude' => $row['latitude'] ?? null,
+                    'longitude' => $row['longitude'] ?? null,
+                    'altitude' => $row['altitude'] ?? 50,
+                    'speed' => ($row['speed'] ?? '') === '' ? null : $row['speed'],
+                ]);
+                if (!$waypoint->save()) {
+                    throw new \RuntimeException('Invalid waypoint at position ' . ($i + 1));
+                }
+            }
+        });
+
+        return count($rows);
     }
 
     protected function findModel(int $id): Mission
