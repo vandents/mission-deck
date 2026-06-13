@@ -10,6 +10,9 @@ services:
       DB_NAME: missiondeck
       DB_USER: missiondeck
       DB_PASSWORD: secret
+      # Local dev runs with the debug toolbar and Gii; the server defaults to prod.
+      YII_ENV: dev
+      YII_DEBUG: "1"
     depends_on:
       db:
         condition: service_healthy

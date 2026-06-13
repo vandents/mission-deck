@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-// comment out the following two lines when deployed to production
-defined('YII_DEBUG') or define('YII_DEBUG', true);
-defined('YII_ENV') or define('YII_ENV', 'dev');
+// Driven by environment so the same code is safe in dev and prod.
+// Defaults are production-safe: debug off, env 'prod' unless told otherwise.
+defined('YII_DEBUG') or define('YII_DEBUG', getenv('YII_DEBUG') === '1');
+defined('YII_ENV') or define('YII_ENV', getenv('YII_ENV') ?: 'prod');
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
