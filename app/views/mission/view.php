@@ -18,6 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Plan Route', ['plan', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Replay', ['replay', 'id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
+        <?= Html::a('Export .plan', ['export-plan', 'id' => $model->id], ['class' => 'btn btn-outline-secondary']) ?>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -27,6 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <?= Html::beginForm(['import-plan', 'id' => $model->id], 'post', [
+        'enctype' => 'multipart/form-data',
+        'class' => 'd-flex align-items-center gap-2 mb-3',
+    ]) ?>
+        <label class="small text-body-secondary mb-0">Import QGroundControl&nbsp;.plan:</label>
+        <input type="file" name="plan" accept=".plan,application/json" class="form-control form-control-sm" style="max-width: 18rem;" required>
+        <?= Html::submitButton('Import', ['class' => 'btn btn-sm btn-outline-success']) ?>
+    <?= Html::endForm() ?>
 
     <?= DetailView::widget([
         'model' => $model,
