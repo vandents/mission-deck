@@ -8,6 +8,7 @@ use Yii;
 use app\models\Asset;
 use app\models\Drone;
 use app\models\LoginForm;
+use app\models\Mission;
 use yii\base\Security;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -78,6 +79,7 @@ class SiteController extends Controller
         return $this->render('index', [
             'droneCounts' => array_map('intval', array_column($rows, 'n', 'status')),
             'assetCount' => (int) Asset::find()->count(),
+            'missionCount' => (int) Mission::find()->count(),
         ]);
     }
 

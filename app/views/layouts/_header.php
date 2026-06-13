@@ -20,6 +20,11 @@ $items = [
         'visible' => !Yii::$app->user->isGuest,
     ],
     [
+        'label' => 'Missions',
+        'url' => ['/mission/index'],
+        'visible' => !Yii::$app->user->isGuest,
+    ],
+    [
         'label' => 'Assets',
         'url' => ['/asset/index'],
         'visible' => !Yii::$app->user->isGuest,

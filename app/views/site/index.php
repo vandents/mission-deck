@@ -9,6 +9,7 @@ use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var array<string, int> $droneCounts drone status => count */
 /** @var int $assetCount */
+/** @var int $missionCount */
 
 $this->title = 'Dashboard';
 
@@ -16,7 +17,7 @@ $totalDrones = array_sum($droneCounts);
 $cards = [
     ['label' => 'Total Drones', 'value' => $totalDrones, 'url' => ['/drone/index'], 'class' => 'text-bg-dark'],
     ['label' => 'Available', 'value' => $droneCounts[Drone::STATUS_AVAILABLE] ?? 0, 'url' => ['/drone/index'], 'class' => 'text-bg-success'],
-    ['label' => 'In Mission', 'value' => $droneCounts[Drone::STATUS_IN_MISSION] ?? 0, 'url' => ['/drone/index'], 'class' => 'text-bg-primary'],
+    ['label' => 'Missions', 'value' => $missionCount, 'url' => ['/mission/index'], 'class' => 'text-bg-primary'],
     ['label' => 'Assets', 'value' => $assetCount, 'url' => ['/asset/index'], 'class' => 'text-bg-secondary'],
 ];
 ?>
